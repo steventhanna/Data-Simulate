@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * The tutorial from http://docs.mongodb.org/ecosystem/tutorial/getting-started-with-java-driver/
  */
-public class DataSimulate extends Randomness {
+public class DataSimulate extends Generate {
     // CHECKSTYLE:OFF
     /**
      * Run this main method to see the output of this quick example.
@@ -59,7 +59,10 @@ public class DataSimulate extends Randomness {
         randomBoolean();
         // get a collection object to work with
         DBCollection coll = db.getCollection("influencer");
-        
+        for(int i=1000; i>0; i--) {
+        	generateInfluencer();
+        	generateAdvertiser();
+        }
         System.out.println(coll);
         /*
         BasicDBObject doc = new BasicDBObject("_id", "josh")

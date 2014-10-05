@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class Randomness {
 	
-	public static void randomDate() {
+	public static String randomDate() {
 		Random random = new Random();
 		// Pick Month
 		int month = random.nextInt(13);
@@ -18,8 +18,10 @@ public class Randomness {
 		int date = random.nextInt(32);
 		// Pick Year
 		int year = random.nextInt(2016);
+		String finalDate = (month + "/" + date + "/" + year);
 		// Output
 		System.out.println(month + "/" + date + "/" + year);
+		return finalDate;
 		
 	}
 	
@@ -61,6 +63,7 @@ public class Randomness {
 		System.out.println(bool);
 		return bool;
 	}
+	
 	
 	
 }

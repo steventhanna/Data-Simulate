@@ -59,10 +59,12 @@ public class DataSimulate extends Generate {
         randomBoolean();
         // get a collection object to work with
         DBCollection coll = db.getCollection("influencer");
-        for(int i=1000; i>0; i--) {
+       
+        for(int i=3000; i>0; i--) {
         	generateInfluencer();
         	generateAdvertiser();
         }
+        
         System.out.println(coll);
         /*
         BasicDBObject doc = new BasicDBObject("_id", "josh")

@@ -50,7 +50,7 @@ public class Generate extends Randomness {
 	}
 	
 	public static void exportCredentials(String export) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/credentials.txt", true)))) {
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/java/data-simulate/credentials.txt", true)))) {
 		    out.println(export);
 		}catch (IOException e) {
 		    //exception handling left as an exercise for the reader

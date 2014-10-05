@@ -41,6 +41,22 @@ public class Randomness {
 		return randomName;
 	}
 	
+	public static String randomWord() throws IOException {
+		String fileName = "/Users/steventhanna/Desktop/Programming/java/data-simulate/the-english.txt";
+		ArrayList<String> allNames = new ArrayList<String>();
+		Random random = new Random();
+
+		BufferedReader in = new BufferedReader(new FileReader(fileName)); 
+		while (in.ready()) { 
+		     allNames.add( in.readLine() );
+		}
+		in.close();
+
+		String randomName = allNames.get(random.nextInt(allNames.size()));
+		System.out.println(randomName);
+		return randomName;
+	}
+	
 	public static String randomLastName() throws IOException {
 		String fileName = "/Users/steventhanna/Desktop/Programming/java/data-simulate/lastNames.txt";
 		ArrayList<String> allNames = new ArrayList<String>();

@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * The tutorial from http://docs.mongodb.org/ecosystem/tutorial/getting-started-with-java-driver/
  */
-public class DataSimulate extends Generate {
+public class DataSimulate extends AddToMongo {
     // CHECKSTYLE:OFF
     /**
      * Run this main method to see the output of this quick example.
@@ -53,17 +53,15 @@ public class DataSimulate extends Generate {
         for (final String s : collectionNames) {
             System.out.println(s);
         }
-        randomDate();
-        randomFirstName();
-        randomLastName();
-        randomBoolean();
         // get a collection object to work with
         DBCollection coll = db.getCollection("influencer");
-       
-        for(int i=3000; i>0; i--) {
-        	generateInfluencer();
-        	generateAdvertiser();
+        
+        for(int i=100; i>0; i--) {
+        	addInfluencer();
         }
+        
+        
+        
         
         System.out.println(coll);
         /*

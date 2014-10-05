@@ -19,14 +19,18 @@ public class Generate extends Randomness {
 		// Add data
 		// Vars
 		String firstName = randomFirstName();
-		String type = ("influencer");
+		String type = ("influencerAccount");
+		String primaryAccount = ("Influencer");
+		Boolean completed = randomBoolean();
+		Boolean linkToTwitter = randomBoolean();
+		String securityQuestion1 = randomWord();
+		String securityQuestion2 = randomWord();
 		String lastName = randomLastName();
 		String dateOfBirth = randomDate();
 		String fullName = (firstName + " " + lastName);
 		String email = (firstName + lastName + "@example.com");
 		String password = ("password");
-		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + type);
-		System.out.println(export);
+		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type);
 		exportCredentials(export);
 	}
 	
@@ -38,14 +42,17 @@ public class Generate extends Randomness {
 		// Add data
 		// Vars
 		String firstName = randomFirstName();
-		String type = ("advertiser");
+		String type = ("advertiserAccount");
+		String primaryAccount = ("Advertiser");
+		Boolean completed = randomBoolean();
 		String lastName = randomLastName();
 		String dateOfBirth = randomDate();
+		String securityQuestion1 = randomWord();
+		String securityQuestion2 = randomWord();
 		String fullName = (firstName + " " + lastName);
 		String email = (firstName + lastName + "@example.com");
 		String password = ("password");
-		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + type);
-		System.out.println(export);
+		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type);
 		exportCredentials(export);
 	}
 	

@@ -30,7 +30,7 @@ public class Generate extends Randomness {
 		String fullName = (firstName + " " + lastName);
 		String email = (firstName + lastName + "@example.com");
 		String password = ("password");
-		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type);
+		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type + ", Completed: " + completed);
 		exportCredentials(export);
 	}
 	
@@ -57,7 +57,7 @@ public class Generate extends Randomness {
 	}
 	
 	public static void exportCredentials(String export) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/java/data-simulate/credentials.txt", true)))) {
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/sails/adswithfriends/data-simulate/datasimulate/credentials.txt", true)))) {
 		    out.println(export);
 		}catch (IOException e) {
 		    //exception handling left as an exercise for the reader

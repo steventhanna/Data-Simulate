@@ -56,7 +56,7 @@ public class DataSimulate extends AddToMongo {
         // get a collection object to work with
         DBCollection coll = db.getCollection("influencer");
         
-        for(int i=100; i>0; i--) {
+        for(int i=1; i>0; i--) {
         	addInfluencer();
         }
         

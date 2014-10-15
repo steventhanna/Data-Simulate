@@ -1,0 +1,231 @@
+/**
+*	<code>InsertData</code> will add randomized data to a mongo database
+*	@date October 15 2014
+*	@author Steven T Hanna
+*	@author Preston Stosur-Bassett
+*/
+
+import com.mongodb.*;
+
+import java.io.*;
+import java.net.UnknownHostException;
+import java.util.*;
+
+import org.bson.types.ObjectId;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+public class InsertData extends Randomness {
+	//Initialize mongo client and get database
+	private MongoClient mongoClient = new MongoClient();
+	private DB db = mongoClient.getDB("awf_db");
+
+	//Declare the database collections
+	private DBCollection influencers = db.getCollection("influencer");
+	private DBCollection securityCollection = db.getCollection("security");
+	private DBCollection users = db.getCollection("user");
+	private DBCollection advertisers = db.getCollection("advertiser");
+
+	/**
+	*	<code>createUser</code> will create a user instance of the User model defined 
+	*		in the adswithfriends /api/models/User.js
+	*	Will randomize the data for input
+	*	@throws IOException
+	*	@return ObjectId the `_id` of the user that was just created
+	*	@param String primAcct Accepts a String of the primary Account type,
+	*		either `Influencer` or `Advertiser`
+	*/
+	public static ObjectId createUser(String primAcct) throws IOException {
+		//Generate random user information
+		String firstName = randomFirstName();
+		String lastName = randomLastName();
+		//For testing purposes, we will set these to true, 
+		Boolean completed = true; //randomBoolean();
+		Boolean confirmed = true; //randomBoolean();
+		Boolean isActive = randomBoolean();
+		int uid = randomNumber();
+		String fullName = firstName + " " + lastName;
+		Boolean linkToTwitter = randomBoolean();
+		String dateOfBirth = randomDate();
+		Location location = randomLocation();
+		String fullLocation = location.getLocation();
+		String city = null;
+		String state = location.getState();
+		String country = location.getCountry;
+		String password = randomWord();
+		String email = (firstName+"."+lastName+"@adswithfriends.com");
+
+		if(location.hasCity) {
+			city = location.getCity;
+		}
+
+		//Create a security profile for the user.
+		ObjectId securityProfile = createSecurityProfile();
+
+
+		//Create the user object
+		BasicDBObject userAccount = new BasicDBObject("primaryAccount", primAcct)
+		.append("firstName", firstName)
+		.append("lastName", lastName)
+		.append("completed", completed)
+		.append("confirmed", confirmed)
+		.append("isActive", isActive)
+		.append("uid", uid)
+		.append("fullName", fullName)
+		.append("linkToTwitter", linkToTwitter)
+		.append("birthdate", dateOfBirth)
+		.append("location", fullLocation)
+		.append("city", city)
+		.append("state", state)
+		.append("country", country)
+		.append("email", email)
+		.append("password", password)
+		.append("securityProfile", securityProfile);
+
+		//Create advertiser account or influencer account
+		if(primAcct.equals("Influencer")) {
+			ObjectId influencerProfile = createInfluencer();
+			userAccount.append("influencerAccount", influencerAccount);
+			userAccount.append("primaryAccount", primAcct);
+		}
+		else if(primAcct.equals("Advertiser")) {
+			ObjectId advertiserProfile = createAdvertiser();
+			userAccount.append("advertiserAccount", advertiserAccount);
+			userAccount.append("primaryAccount", primAcct);
+		}
+		else {
+			System.out.println("ERROR!! Error Code 01 = Incorrect Account Type.");
+		}
+
+		ObjectId userId = userAccount.get("_id");
+
+		//insert the user into the collection of users
+		users.insert(userAccount);
+
+		//export the users credentials
+		String creds = "Username: "+email+";  Password: "+password";  ";
+		exportCredentials(creds);
+
+		return userId;
+	}
+
+	/**
+	*	<code>createSecurityProfile</code> will create an instance of the security profile
+	*		in the adswithfriends database following the model found in /api/models/Security.js
+	*	Will randomize the data in the profile
+	*	@return ObjectId the `_id` of the security profile to be linked to the user
+	*/
+	private static ObjectId createSecurityProfile() {
+		//Generate the random information
+		boolean resetPassword = false;
+		String questionOne = randomWord();
+		String questionTwo = randomWord();
+		String answerOne = randomWord();
+		String answerTwo = randomWord();
+		int resetToken = randomNumber();
+
+		//create the security object
+		BasicDBObject profile = new BasicDBObject("resetPassword", resetPassword)
+		.append("questionOne", questionOne)
+		.append("questionTwo", questionTwo)
+		.append("answerOne", answerOne)
+		.append("answerTwo")
+		.append("resetToken", resetToken);
+
+		ObjectId thisID = (ObjectId)profile.get("_id");
+
+		//insert the security object into the security collection
+		securityCollection.insert(profile);
+
+		return thisID;
+	}
+
+	/**
+	*	<code>createInfluencer</code> will create an instance of the influencer account
+	*		in the adswithfriends database following the model found in /api/model/Influencer.js
+	*	Will randomize the data in the database
+	*	@return ObjectId `_id` of the influencer profile to be linked to the user.
+	*/
+	private static ObjectId createInfluencer() {
+		//Generate the random data
+		boolean isActive = true;
+		Array sphere = randomSphere();
+		boolean allowExplicit = randomBoolean();
+		Location fullTwitterLocation = randomLocation();
+		String twitterLocation = fullTwitterLocation.getLocation();
+		int followerCount = randomNumber();
+		String dateCreated = randomDate();
+		int statusCount = randomNumber();
+		boolean defaultProfile = randomBoolean();
+		boolean suspendStatus = randomBoolean();
+		float totalValue = randomFloat();
+		int totalTweets = randomNumber();
+		float payoutOption = randomFloat();
+
+		//Create the influencer object
+		BasicDBObject influencerAccount = new BasicDBObject("isActive", isActive)
+		.append("sphere", sphere)
+		.append("allowExplicit", allowExplicit)
+		.append("location", twitterLocation)
+		.append("followerCount", followerCount)
+		.append("dateCreated", dateCreated)
+		.append("statusCount", statusCount)
+		.append("defaultProfile", defaultProfile)
+		.append("suspendStatus", suspendStatus)
+		.append("totalValue", totalValue)
+		.append("totalTweets", totalTweets)
+		.append("payoutOption", payoutOption);
+
+		ObjectId influencerID = (ObjectId)influencerAccount.get("_id");
+
+		//Insert the influencer into the collection
+		influencers.insert(influencerAccount);
+
+		return influencerID;
+	}
+
+	/**
+	*	<code>createAdvertiser</code> will create an instance of the advertiser account
+	*		in the adswithfriends database following the model found in /api/model/Advertiser.js
+	*	Will randomize the data
+	*	@return ObjectId `_id` of the advertiser profile to be linked to the user
+	*/
+	private static ObjectId createAdvertiser() {
+		//Generate random data
+		boolean isActive = true;
+		Array sphere = randomSphere();
+		boolean explicit = randomBoolean();
+		int totalTweets = randomNumber();
+		float currentValue = randomFloat();
+		boolean advertiserReady = true;
+		float lastUploadValue = randomFloat();
+		String organizationName = randomWord();
+
+		//Create the advertiser object
+		BasicDBObject advertiserAccount = new BasicDBObject("isActive", isActive)
+		.append("sphere", sphere)
+		.append("explicit", explicit)
+		.append("totalTweets", totalTweets)
+		.append("currentValue", currentValue)
+		.append("advertiserReady", advertiserReady)
+		.append("lastUploadValue", lastUploadValue)
+		.append("organizationName", organizationName);
+
+		ObjectId advertiserID = (ObjectId)advertiserAccount.get("_id");
+
+		//Insert the advertiser into the collection
+		advertisers.insert(advertiserAccount);
+
+		return advertiserID;
+	}
+
+	private static void exportCredentials(String export) throws IOException {
+		try(PrintWriter out = new PrintWriter(new BufferWriter(new FileWriter("../../credentials.txt", true))))
+		{
+			out.println(export);
+		}
+		catch(IOException e) {
+			System.out.println("ERROR!! Error 02 = Export Credentials Error");
+		}
+	}
+}

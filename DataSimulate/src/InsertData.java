@@ -31,11 +31,10 @@ public class InsertData extends Randomness {
 	*		in the adswithfriends /api/models/User.js
 	*	Will randomize the data for input
 	*	@throws IOException
-	*	@return ObjectId the `_id` of the user that was just created
 	*	@param String primAcct Accepts a String of the primary Account type,
 	*		either `Influencer` or `Advertiser`
 	*/
-	public ObjectId createUser(String primAcct) throws IOException {
+	public static void createUser(String primAcct) throws IOException {
 		//Generate random user information
 		String firstName = randomFirstName();
 		String lastName = randomLastName();

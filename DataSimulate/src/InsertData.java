@@ -35,7 +35,7 @@ public class InsertData extends Randomness {
 	*	@param String primAcct Accepts a String of the primary Account type,
 	*		either `Influencer` or `Advertiser`
 	*/
-	public static ObjectId createUser(String primAcct) throws IOException {
+	public ObjectId createUser(String primAcct) throws IOException {
 		//Generate random user information
 		String firstName = randomFirstName();
 		String lastName = randomLastName();
@@ -103,7 +103,7 @@ public class InsertData extends Randomness {
 		users.insert(userAccount);
 
 		//export the users credentials
-		String creds = "Username: "+email+";  Password: "+password";  ";
+		String creds = "Username: "+email+";  Password: "+password+";  ";
 		exportCredentials(creds);
 
 		return userId;
@@ -115,7 +115,7 @@ public class InsertData extends Randomness {
 	*	Will randomize the data in the profile
 	*	@return ObjectId the `_id` of the security profile to be linked to the user
 	*/
-	private static ObjectId createSecurityProfile() {
+	private ObjectId createSecurityProfile() {
 		//Generate the random information
 		boolean resetPassword = false;
 		String questionOne = randomWord();
@@ -146,7 +146,7 @@ public class InsertData extends Randomness {
 	*	Will randomize the data in the database
 	*	@return ObjectId `_id` of the influencer profile to be linked to the user.
 	*/
-	private static ObjectId createInfluencer() {
+	private ObjectId createInfluencer() {
 		//Generate the random data
 		boolean isActive = true;
 		Array sphere = randomSphere();
@@ -190,7 +190,7 @@ public class InsertData extends Randomness {
 	*	Will randomize the data
 	*	@return ObjectId `_id` of the advertiser profile to be linked to the user
 	*/
-	private static ObjectId createAdvertiser() {
+	private ObjectId createAdvertiser() {
 		//Generate random data
 		boolean isActive = true;
 		Array sphere = randomSphere();
@@ -219,7 +219,7 @@ public class InsertData extends Randomness {
 		return advertiserID;
 	}
 
-	private static void exportCredentials(String export) throws IOException {
+	private void exportCredentials(String export) throws IOException {
 		try(PrintWriter out = new PrintWriter(new BufferWriter(new FileWriter("../../credentials.txt", true))))
 		{
 			out.println(export);

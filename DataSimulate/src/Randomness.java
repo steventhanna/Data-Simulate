@@ -152,8 +152,8 @@ public class Randomness {
 		Random random = new Random();
 		float number = random.nextFloat();
 		float newNumber = number * 100000000000000000000;
-		System.out.println(newNumber);
-		return newNumber;
+		//System.out.println(number);
+		return number;
 	}
 	
 	

@@ -239,4 +239,21 @@ public class InsertData extends Randomness {
 			System.out.println("ERROR!! Error 02 = Export Credentials Error");
 		}
 	}
+	
+	public void static main(String[] args) {
+		boolean influencerOrAdvertiser; = new Random().nextInt(2)==0;
+		String accountType;
+		
+		for(int i = 0; i < 100; i++) {
+			influencerOrAdvertiser = new Random().nextInt(2)==0;
+			if(influencerOrAdvertiser == true) {
+				accountType = "Advertiser";
+			}
+			else {
+				accountType = "Influencer";
+			}
+			
+			createUser(accountType);
+		}
+	}
 }

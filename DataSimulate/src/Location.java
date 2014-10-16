@@ -25,7 +25,7 @@ public class Location {
 	*	<code>Location(String theState, String theCountry)</code> creates a location 
 	*		object with only the state and country provided
 	*/
-	public Locatino(String theState, String theCountry) {
+	public Location(String theState, String theCountry) {
 		city = null;
 		state = theState;
 		country = theCountry;

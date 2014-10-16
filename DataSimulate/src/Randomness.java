@@ -15,7 +15,7 @@ public class Randomness {
 		return randy;
 	}
 
-	public static Array randomSphere() {
+	public static String[] randomSphere() {
 		//Generate a random number between 0 and 10
 		//new Random().nextInt((max - min) + 1) + min;
 		int lengthOfSphere = new Random().nextInt((10 - 0) + 1) + 0;
@@ -151,7 +151,7 @@ public class Randomness {
 	public static float randomID() {
 		Random random = new Random();
 		float number = random.nextFloat();
-		float newNumber = number * 100000000000000000000;
+		//float newNumber = number * 100000000000000000000;
 		//System.out.println(number);
 		return number;
 	}

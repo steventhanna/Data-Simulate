@@ -41,7 +41,7 @@ public class AddToMongo extends Generate {
 		String password = ("password");
 		Boolean allowExplicit = randomBoolean();
 		Boolean resetPassword = randomBoolean();
-		// Double uid = randomID();
+		Double uid = randomID();
 		
 		
 		// Add information to collection USER

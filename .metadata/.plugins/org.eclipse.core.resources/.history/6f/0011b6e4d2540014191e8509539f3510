@@ -44,7 +44,7 @@ public class InsertData extends Randomness {
 	*		either `Influencer` or `Advertiser`
 	 * @return 
 	*/
-	public static Object createUser(String primAcct) throws IOException {
+	public static ObjectId createUser(String primAcct) throws IOException {
 		//Generate random user information
 		String firstName = randomFirstName();
 		String lastName = randomLastName();
@@ -94,19 +94,19 @@ public class InsertData extends Randomness {
 		//Create advertiser account or influencer account
 		if(primAcct.equals("Influencer")) {
 			ObjectId influencerProfile = createInfluencer();
-			userAccount.append("influencerAccount", influencerProfile);
+			userAccount.append("influencerAccount", influencerAccount);
 			userAccount.append("primaryAccount", primAcct);
 		}
 		else if(primAcct.equals("Advertiser")) {
 			ObjectId advertiserProfile = createAdvertiser();
-			userAccount.append("advertiserAccount", advertiserProfile);
+			userAccount.append("advertiserAccount", advertiserAccount);
 			userAccount.append("primaryAccount", primAcct);
 		}
 		else {
 			System.out.println("ERROR!! Error Code 01 = Incorrect Account Type.");
 		}
 
-		Object userId = userAccount.get("_id");
+		ObjectId userId = userAccount.get("_id");
 
 		//insert the user into the collection of users
 		users.insert(userAccount);
@@ -201,7 +201,7 @@ public class InsertData extends Randomness {
 	*	@return ObjectId `_id` of the advertiser profile to be linked to the user
 	 * @throws IOException 
 	*/
-	private static ObjectId createAdvertiser() throws IOException {
+	private ObjectId createAdvertiser() throws IOException {
 		//Generate random data
 		boolean isActive = true;
 		String[] sphere = randomSphere();
@@ -230,7 +230,7 @@ public class InsertData extends Randomness {
 		return advertiserID;
 	}
 
-	private static void exportCredentials(String export) throws IOException {
+	private void exportCredentials(String export) throws IOException {
 		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("../../credentials.txt", true))))
 		{
 			out.println(export);

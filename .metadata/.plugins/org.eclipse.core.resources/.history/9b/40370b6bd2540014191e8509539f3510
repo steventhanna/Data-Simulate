@@ -5,11 +5,10 @@
 *	@date October 15 2014
 */
 
-import java.io.IOException;
 import java.util.Random;
 
 public class Driver {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		//Create a boolean for either advertiser or influencer
 		boolean advOrInf;
 

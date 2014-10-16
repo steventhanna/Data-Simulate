@@ -44,7 +44,7 @@ public class InsertData extends Randomness {
 	*		either `Influencer` or `Advertiser`
 	 * @return 
 	*/
-	public static Object createUser(String primAcct) throws IOException {
+	public static ObjectId createUser(String primAcct) throws IOException {
 		//Generate random user information
 		String firstName = randomFirstName();
 		String lastName = randomLastName();

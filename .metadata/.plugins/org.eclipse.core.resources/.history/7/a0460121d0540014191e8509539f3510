@@ -8,32 +8,24 @@
 import com.mongodb.*;
 
 import java.io.*;
+import java.io.BufferedWriter;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.lang.*;
 
 import org.bson.types.ObjectId;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class InsertData extends Randomness {
-	
-	
-	private void makeMongoClient() throws UnknownHostException {
-		try {
-			final MongoClient mongoClient = new MongoClient();
-			DB db = mongoClient.getDB("awf_db");
-		} finally {
-			
-		}
-	}
+	//Initialize mongo client and get database
+	private MongoClient mongoClient = new MongoClient();
+	private DB db = mongoClient.getDB("awf_db");
 
 	//Declare the database collections
-	private static DB db;
-	private static DBCollection influencers = db.getCollection("influencer");
-	private static DBCollection securityCollection = db.getCollection("security");
-	private static DBCollection users = db.getCollection("user");
-	private static DBCollection advertisers = db.getCollection("advertiser");
+	private DBCollection influencers = db.getCollection("influencer");
+	private DBCollection securityCollection = db.getCollection("security");
+	private DBCollection users = db.getCollection("user");
+	private DBCollection advertisers = db.getCollection("advertiser");
 
 	/**
 	*	<code>createUser</code> will create a user instance of the User model defined 
@@ -42,9 +34,8 @@ public class InsertData extends Randomness {
 	*	@throws IOException
 	*	@param String primAcct Accepts a String of the primary Account type,
 	*		either `Influencer` or `Advertiser`
-	 * @return 
 	*/
-	public static Object createUser(String primAcct) throws IOException {
+	public static void createUser(String primAcct) throws IOException {
 		//Generate random user information
 		String firstName = randomFirstName();
 		String lastName = randomLastName();
@@ -60,12 +51,12 @@ public class InsertData extends Randomness {
 		String fullLocation = location.getLocation();
 		String city = null;
 		String state = location.getState();
-		String country = location.getCountry();
+		String country = location.getCountry;
 		String password = randomWord();
 		String email = (firstName+"."+lastName+"@adswithfriends.com");
 
-		if(location.hasCity()) {
-			city = location.getCity();
+		if(location.hasCity) {
+			city = location.getCity;
 		}
 
 		//Create a security profile for the user.
@@ -94,25 +85,25 @@ public class InsertData extends Randomness {
 		//Create advertiser account or influencer account
 		if(primAcct.equals("Influencer")) {
 			ObjectId influencerProfile = createInfluencer();
-			userAccount.append("influencerAccount", influencerProfile);
+			userAccount.append("influencerAccount", influencerAccount);
 			userAccount.append("primaryAccount", primAcct);
 		}
 		else if(primAcct.equals("Advertiser")) {
 			ObjectId advertiserProfile = createAdvertiser();
-			userAccount.append("advertiserAccount", advertiserProfile);
+			userAccount.append("advertiserAccount", advertiserAccount);
 			userAccount.append("primaryAccount", primAcct);
 		}
 		else {
 			System.out.println("ERROR!! Error Code 01 = Incorrect Account Type.");
 		}
 
-		Object userId = userAccount.get("_id");
+		ObjectId userId = userAccount.get("_id");
 
 		//insert the user into the collection of users
 		users.insert(userAccount);
 
 		//export the users credentials
-		String creds = "Username: "+email + ";  Password: "+password+";  ";
+		String creds = "Username: "+email+";  Password: "+password+";  ";
 		exportCredentials(creds);
 
 		return userId;
@@ -123,9 +114,8 @@ public class InsertData extends Randomness {
 	*		in the adswithfriends database following the model found in /api/models/Security.js
 	*	Will randomize the data in the profile
 	*	@return ObjectId the `_id` of the security profile to be linked to the user
-	 * @throws IOException 
 	*/
-	private static ObjectId createSecurityProfile() throws IOException {
+	private ObjectId createSecurityProfile() {
 		//Generate the random information
 		boolean resetPassword = false;
 		String questionOne = randomWord();
@@ -139,7 +129,7 @@ public class InsertData extends Randomness {
 		.append("questionOne", questionOne)
 		.append("questionTwo", questionTwo)
 		.append("answerOne", answerOne)
-		.append("answerTwo", answerTwo)
+		.append("answerTwo")
 		.append("resetToken", resetToken);
 
 		ObjectId thisID = (ObjectId)profile.get("_id");
@@ -156,10 +146,10 @@ public class InsertData extends Randomness {
 	*	Will randomize the data in the database
 	*	@return ObjectId `_id` of the influencer profile to be linked to the user.
 	*/
-	private static ObjectId createInfluencer() {
+	private ObjectId createInfluencer() {
 		//Generate the random data
 		boolean isActive = true;
-		String[] sphere = randomSphere();
+		Array sphere = randomSphere();
 		boolean allowExplicit = randomBoolean();
 		Location fullTwitterLocation = randomLocation();
 		String twitterLocation = fullTwitterLocation.getLocation();
@@ -199,12 +189,11 @@ public class InsertData extends Randomness {
 	*		in the adswithfriends database following the model found in /api/model/Advertiser.js
 	*	Will randomize the data
 	*	@return ObjectId `_id` of the advertiser profile to be linked to the user
-	 * @throws IOException 
 	*/
-	private static ObjectId createAdvertiser() throws IOException {
+	private ObjectId createAdvertiser() {
 		//Generate random data
 		boolean isActive = true;
-		String[] sphere = randomSphere();
+		Array sphere = randomSphere();
 		boolean explicit = randomBoolean();
 		int totalTweets = randomNumber();
 		float currentValue = randomFloat();
@@ -230,8 +219,8 @@ public class InsertData extends Randomness {
 		return advertiserID;
 	}
 
-	private static void exportCredentials(String export) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("../../credentials.txt", true))))
+	private void exportCredentials(String export) throws IOException {
+		try(PrintWriter out = new PrintWriter(new BufferWriter(new FileWriter("../../credentials.txt", true))))
 		{
 			out.println(export);
 		}

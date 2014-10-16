@@ -17,16 +17,18 @@ import org.bson.types.ObjectId;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class InsertData extends Randomness {
+	//Grab the database and set up the mongo client
+	MongoClient client = new MongoClient();
+	DB db = client.getDB("awf_db");
 	
-	
-	private void makeMongoClient() throws UnknownHostException {
+	/*private void makeMongoClient() throws UnknownHostException {
 		try {
 			final MongoClient mongoClient = new MongoClient();
 			DB db = mongoClient.getDB("awf_db");
 		} finally {
 			
 		}
-	}
+	}*/
 
 	//Declare the database collections
 	private static DB db;

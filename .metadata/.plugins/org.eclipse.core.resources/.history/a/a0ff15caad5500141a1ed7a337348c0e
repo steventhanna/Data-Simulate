@@ -41,7 +41,7 @@ public class AddToMongo extends Generate {
 		String password = ("password");
 		Boolean allowExplicit = randomBoolean();
 		Boolean resetPassword = randomBoolean();
-		Double uid = null;
+		Double uid;
 		
 		
 		// Add information to collection USER
@@ -50,7 +50,7 @@ public class AddToMongo extends Generate {
 		// Lets try something... lets update the collection with the new _ID
 		BasicDBObject userObject = new BasicDBObject("email", email)
 		.append("password", password)
-		// .append("uid", uid)
+		.append("uid", uid)
 		.append("firstName", firstName)
 		.append("lastName", lastName)
 		.append("fullName", fullName)

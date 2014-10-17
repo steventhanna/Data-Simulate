@@ -20,6 +20,7 @@ import com.mongodb.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -27,7 +28,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * The tutorial from http://docs.mongodb.org/ecosystem/tutorial/getting-started-with-java-driver/
  */
-public class DataSimulate extends AddToMongo {
+public class DataSimulate extends Generate {
     // CHECKSTYLE:OFF
     /**
      * Run this main method to see the output of this quick example.
@@ -56,10 +57,26 @@ public class DataSimulate extends AddToMongo {
         // get a collection object to work with
         DBCollection coll = db.getCollection("influencer");
         
-        for(int i=1; i>0; i--) {
-        	addInfluencer();
+        //Create a boolean for either advertiser or influencer
+		boolean advOrInf;
+	
+		//Loop 100 times creating new users
+			//Should create about 50 influencers and about 50 advertisers
+		/*for(int i = 0; i < 100; i++) {
+			advOrInf = new Random().nextInt(2)==0;
+	
+			if(advOrInf == true) {
+				//Create an advertiser account
+				generateAdvertiser();
+			}
+			else {
+				//Create an influencer account
+				generateInfluencer();
+			}
+		}*/
+        for(int i = 0; i < 1000; i++) {
+            generateInfluencer();
         }
-        
         
         
         

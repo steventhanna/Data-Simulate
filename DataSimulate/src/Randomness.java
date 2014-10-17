@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Collections;
 
 public class Randomness {
-
+	
 	public static float randomFloat() {
 		float randy = new Random().nextFloat();
 		return randy;
 	}
-
+	
 	public static String[] randomSphere() {
 		//Generate a random number between 0 and 10
 		//new Random().nextInt((max - min) + 1) + min;
@@ -55,22 +55,6 @@ public class Randomness {
 
 		return spheres;
 	}
-
-	public static Location randomLocation() {
-		boolean cityOrState = new Random().nextInt(2)==0;
-		Location location;
-
-		if(cityOrState == true) {
-			//Return a random location with just state and country
-			location = new Location("Illinois", "USA");
-		}
-		else {
-			//Return a random location with city, state, and country
-			location = new Location("Chicago", "IL", "USA");
-		}
-
-		return location;
-	}
 	
 	public static String randomDate() {
 		Random random = new Random();
@@ -88,7 +72,7 @@ public class Randomness {
 	}
 	
 	public static String randomFirstName() throws IOException {
-		String fileName = "../../firstNames.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/sails/adswithfriends/Data-Simulate/firstNames.txt";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 
@@ -103,8 +87,24 @@ public class Randomness {
 		return randomName;
 	}
 	
+	public static Location randomLocation() {
+		boolean cityOrState = new Random().nextInt(2)==0;
+		Location location;
+
+		if(cityOrState == true) {
+			//Return a random location with just state and country
+			location = new Location("Illinois", "USA");
+		}
+		else {
+			//Return a random location with city, state, and country
+			location = new Location("Chicago", "IL", "USA");
+		}
+
+		return location;
+	}
+	
 	public static String randomWord() throws IOException {
-		String fileName = "../../the-english.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/sails/adswithfriends/Data-Simulate/the-english.txt";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 
@@ -120,7 +120,7 @@ public class Randomness {
 	}
 	
 	public static String randomLastName() throws IOException {
-		String fileName = "../../lastNames.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/sails/adswithfriends/Data-Simulate/lastNames.txt";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 
@@ -145,14 +145,6 @@ public class Randomness {
 	public static int randomNumber() {
 		Random random = new Random();
 		int number = random.nextInt(100001);
-		return number;
-	}
-	
-	public static float randomID() {
-		Random random = new Random();
-		float number = random.nextFloat();
-		//float newNumber = number * 100000000000000000000;
-		//System.out.println(number);
 		return number;
 	}
 	

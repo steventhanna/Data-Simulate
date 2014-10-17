@@ -16,9 +16,9 @@ public class AddToMongo extends Randomness {
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
 		// Define collections
-		// DBCollection influencers = db.getCollection("influencer");
-		// DBCollection advertiser = db.getCollection("advertiser");
-		// DBCollection securityCollection = db.getCollection("security");
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection advertiser = db.getCollection("advertiser");
+		DBCollection securityCollection = db.getCollection("security");
 		DBCollection users = db.getCollection("user");
 		
 		// Generate random user information
@@ -210,14 +210,6 @@ public class AddToMongo extends Randomness {
 		return advertiserID;
 	}
 	
-	public static void exportCredentials(String export) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/sails/adswithfriends/data-simulate/datasimulate/credentials.txt", true)))) {
-		    out.println(export);
-		}catch (IOException e) {
-		    //exception handling left as an exercise for the reader
-			System.out.println("HELP!");
-		}
-		
-	}
+	
 	
 }

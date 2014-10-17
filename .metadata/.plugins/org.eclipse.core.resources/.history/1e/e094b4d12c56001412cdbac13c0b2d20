@@ -16,9 +16,9 @@ public class AddToMongo extends Randomness {
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
 		// Define collections
-		// DBCollection influencers = db.getCollection("influencer");
-		// DBCollection advertiser = db.getCollection("advertiser");
-		// DBCollection securityCollection = db.getCollection("security");
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection advertiser = db.getCollection("advertiser");
+		DBCollection securityCollection = db.getCollection("security");
 		DBCollection users = db.getCollection("user");
 		
 		// Generate random user information

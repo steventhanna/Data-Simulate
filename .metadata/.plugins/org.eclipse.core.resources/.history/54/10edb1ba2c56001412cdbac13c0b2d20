@@ -28,7 +28,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * The tutorial from http://docs.mongodb.org/ecosystem/tutorial/getting-started-with-java-driver/
  */
-public class DataSimulate extends AddToMongo {
+public class DataSimulate extends Generate {
     // CHECKSTYLE:OFF
     /**
      * Run this main method to see the output of this quick example.

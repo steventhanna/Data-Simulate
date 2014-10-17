@@ -1,0 +1,99 @@
+import com.mongodb.*;
+
+import java.io.*;
+import java.net.UnknownHostException;
+import java.util.*;
+
+import org.bson.types.ObjectId;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+public class AddToMongo extends Generate {
+	
+	// Create the object method
+	public static Object createUser(String primaryAccount) throws IOException {
+		// Init mongo
+		MongoClient mongoClient = new MongoClient();
+		DB db = mongoClient.getDB("awf_db");
+		// Define collections
+		DBCollection influencer = db.getCollection("influencer");
+		DBCollection advertiser = db.getCollection("advertiser");
+		DBCollection security = db.getCollection("security");
+		DBCollection user = db.getCollection("user");
+		
+		// Generate random user information
+		// Names
+		String firstName = randomFirstName();
+		String lastName = randomLastName();
+		String fullName = firstName + " " + lastName;
+		String email = firstName +"." + lastName + "@adswithfriends.com";
+		// For testing purposes, we will set these to true
+		Boolean completed = true;
+		Boolean confirmed = true;
+		Boolean isActive = randomBoolean();
+		// Random uid
+		int uid = randomNumber();
+		Boolean linkToTwitter = randomBoolean();
+		String dateOfBirth = randomDate();
+		// Init location
+		Location location = randomLocation();
+		String fullLocation = location.getLocation();
+		String city = null;
+		String state = location.getState();
+		String country = location.getCountry();
+		String password = randomWord();
+		
+		// City check
+		if(location.hasCity()) {
+			city = location.getCity();
+		}
+		
+		// Create a security profile for a user
+		ObjectId securityProfile = createSecurityProfile();
+		
+		// Create the user object
+		BasicDBObject userAccount = new BasicDBObject("primaryAccount", primaryAccount)
+		.append("firstName", firstName)
+		.append("lastName", lastName)
+		.append("completed", completed)
+		.append("confirmed", confirmed)
+		.append("isActive", isActive)
+		.append("uid", uid)
+		.append("fullName", fullName)
+		.append("linkToTwitter", linkToTwitter)
+		.append("birthdate", dateOfBirth)
+		.append("location", fullLocation)
+		.append("city", city)
+		.append("state", state)
+		.append("country", country)
+		.append("email", email)
+		.append("password", password)
+		.append("securityProfile", securityProfile);
+		
+		//Create advertiser account or influencer account
+		if(primaryAccount.equals("Influencer")) {
+			ObjectId influencerProfile = createInfluencer();
+			userAccount.append("influencerAccount", influencerProfile);
+			userAccount.append("primaryAccount", primaryAccount);
+		}
+		else if(primaryAccount.equals("Advertiser")) {
+			ObjectId advertiserProfile = createAdvertiser();
+			userAccount.append("advertiserAccount", advertiserProfile);
+			userAccount.append("primaryAccount", primaryAccount);
+		}
+		else {
+			System.out.println("ERROR!! Error Code 01 = Incorrect Account Type.");
+		}
+		
+		// Get the userId again? 
+		Object userId = userAccount.get("_id");
+		
+		// Insert the user information
+		users.insert(userAccount);
+		
+		
+		
+		
+	}
+	
+}

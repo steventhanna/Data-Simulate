@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class AddToMongo extends Randomness {
+public class AddToMongo extends Generate {
 	
 	// Create the object method
 	public static Object createUser(String primaryAccount) throws IOException {
@@ -16,9 +16,9 @@ public class AddToMongo extends Randomness {
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
 		// Define collections
-		// DBCollection influencers = db.getCollection("influencer");
-		// DBCollection advertiser = db.getCollection("advertiser");
-		// DBCollection securityCollection = db.getCollection("security");
+		DBCollection influencer = db.getCollection("influencer");
+		DBCollection advertiser = db.getCollection("advertiser");
+		DBCollection security = db.getCollection("security");
 		DBCollection users = db.getCollection("user");
 		
 		// Generate random user information
@@ -100,12 +100,7 @@ public class AddToMongo extends Randomness {
 		
 	}
 
-	public static ObjectId createSecurityProfile() throws IOException {
-		// Init
-		MongoClient mongoClient = new MongoClient();
-		DB db = mongoClient.getDB("awf_db");
-		DBCollection securityCollection = db.getCollection("security");
-		
+	private static ObjectId createSecurityProfile() throws IOException {
 		//Generate the random information
 		boolean resetPassword = false;
 		String questionOne = randomWord();
@@ -129,94 +124,6 @@ public class AddToMongo extends Randomness {
 		securityCollection.insert(profile);
 
 		return thisID;
-		
-	}
-	
-	public static ObjectId createInfluencer() throws IOException {
-		// init
-		MongoClient mongoClient = new MongoClient();
-		DB db = mongoClient.getDB("awf_db");
-		DBCollection influencers = db.getCollection("influencer");
-		
-		//Generate the random data
-		boolean isActive = true;
-		String[] sphere = randomSphere();
-		boolean allowExplicit = randomBoolean();
-		Location fullTwitterLocation = randomLocation();
-		String twitterLocation = fullTwitterLocation.getLocation();
-		int followerCount = randomNumber();
-		String dateCreated = randomDate();
-		int statusCount = randomNumber();
-		boolean defaultProfile = randomBoolean();
-		boolean suspendStatus = randomBoolean();
-		float totalValue = randomFloat();
-		int totalTweets = randomNumber();
-		float payoutOption = randomFloat();
-
-		//Create the influencer object
-		BasicDBObject influencerAccount = new BasicDBObject("isActive", isActive)
-		.append("sphere", sphere)
-		.append("allowExplicit", allowExplicit)
-		.append("location", twitterLocation)
-		.append("followerCount", followerCount)
-		.append("dateCreated", dateCreated)
-		.append("statusCount", statusCount)
-		.append("defaultProfile", defaultProfile)
-		.append("suspendStatus", suspendStatus)
-		.append("totalValue", totalValue)
-		.append("totalTweets", totalTweets)
-		.append("payoutOption", payoutOption);
-
-		ObjectId influencerID = (ObjectId)influencerAccount.get("_id");
-
-		//Insert the influencer into the collection
-		influencers.insert(influencerAccount);
-
-		return influencerID;
-		
-	}
-
-	public static ObjectId createAdvertiser() throws IOException {
-		// init
-		MongoClient mongoClient = new MongoClient();
-		DB db = mongoClient.getDB("awf_db");
-		DBCollection advertisers = db.getCollection("advertiser");
-		
-		//Generate random data
-		boolean isActive = true;
-		String[] sphere = randomSphere();
-		boolean explicit = randomBoolean();
-		int totalTweets = randomNumber();
-		float currentValue = randomFloat();
-		boolean advertiserReady = true;
-		float lastUploadValue = randomFloat();
-		String organizationName = randomWord();
-	
-		//Create the advertiser object
-		BasicDBObject advertiserAccount = new BasicDBObject("isActive", isActive)
-		.append("sphere", sphere)
-		.append("explicit", explicit)
-		.append("totalTweets", totalTweets)
-		.append("currentValue", currentValue)
-		.append("advertiserReady", advertiserReady)
-		.append("lastUploadValue", lastUploadValue)
-		.append("organizationName", organizationName);
-	
-		ObjectId advertiserID = (ObjectId)advertiserAccount.get("_id");
-	
-		//Insert the advertiser into the collection
-		advertisers.insert(advertiserAccount);
-	
-		return advertiserID;
-	}
-	
-	public static void exportCredentials(String export) throws IOException {
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/sails/adswithfriends/data-simulate/datasimulate/credentials.txt", true)))) {
-		    out.println(export);
-		}catch (IOException e) {
-		    //exception handling left as an exercise for the reader
-			System.out.println("HELP!");
-		}
 		
 	}
 	

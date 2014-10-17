@@ -28,7 +28,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * The tutorial from http://docs.mongodb.org/ecosystem/tutorial/getting-started-with-java-driver/
  */
 public class DataSimulate extends AddToMongo {
-    // CHECKSTYLE:OFF
+
+	// CHECKSTYLE:OFF
     /**
      * Run this main method to see the output of this quick example.
      *
@@ -54,16 +55,11 @@ public class DataSimulate extends AddToMongo {
             System.out.println(s);
         }
         // get a collection object to work with
-        DBCollection coll = db.getCollection("influencer");
-        
-        for(int i=1; i>0; i--) {
-        	addInfluencer();
-        }
         
         
+        createUser("Influencer");
         
         
-        System.out.println(coll);
         /*
         BasicDBObject doc = new BasicDBObject("_id", "josh")
         .append("isActive", "true")

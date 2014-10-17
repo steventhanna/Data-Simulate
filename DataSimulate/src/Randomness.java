@@ -10,6 +10,52 @@ import java.util.Collections;
 
 public class Randomness {
 	
+	public static float randomFloat() {
+		float randy = new Random().nextFloat();
+		return randy;
+	}
+	
+	public static String[] randomSphere() {
+		//Generate a random number between 0 and 10
+		//new Random().nextInt((max - min) + 1) + min;
+		int lengthOfSphere = new Random().nextInt((10 - 0) + 1) + 0;
+
+		String[] spheres = new String[lengthOfSphere];
+
+		if(lengthOfSphere == 0) {
+			//Add nothing, this person has no interests... how boring.
+		}
+		if(lengthOfSphere >= 1) {
+			spheres[0] = "Conversation Starters";
+		}
+		if(lengthOfSphere >= 2) {
+			spheres[1] = "Politics";
+		}
+		if(lengthOfSphere >= 3) {
+			spheres[2]  = "Sports";
+		}
+		if(lengthOfSphere >= 4) {
+			spheres[3] = "TV";
+		}
+		if(lengthOfSphere >= 5) {
+			spheres[4] = "Movies";
+		}
+		if(lengthOfSphere >= 6) {
+			spheres[5] = "Music";
+		}
+		if(lengthOfSphere >= 7) {
+			spheres[6] = "Food";
+		}
+		if(lengthOfSphere >= 8) {
+			spheres[7] = "Tech";
+		}
+		if(lengthOfSphere >= 9) {
+			spheres[8] = "Countries";
+		}
+
+		return spheres;
+	}
+	
 	public static String randomDate() {
 		Random random = new Random();
 		// Pick Month
@@ -39,6 +85,22 @@ public class Randomness {
 		String randomName = allNames.get(random.nextInt(allNames.size()));
 		System.out.println(randomName);
 		return randomName;
+	}
+	
+	public static Location randomLocation() {
+		boolean cityOrState = new Random().nextInt(2)==0;
+		Location location;
+
+		if(cityOrState == true) {
+			//Return a random location with just state and country
+			location = new Location("Illinois", "USA");
+		}
+		else {
+			//Return a random location with city, state, and country
+			location = new Location("Chicago", "IL", "USA");
+		}
+
+		return location;
 	}
 	
 	public static String randomWord() throws IOException {

@@ -6,54 +6,256 @@ import java.util.List;
 import java.util.Set;
 import java.io.*;
 
+import org.bson.types.ObjectId;
+
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class Generate extends Randomness {
 	
+	// Declare the database collections
+	// private static DB db;
+	// private static DBCollection influencers = db.getCollection("influencer");
+	// private static DBCollection securityCollection = db.getCollection("security");
+	// private static DBCollection users = db.getCollection("user");
+	// private static DBCollection advertisers = db.getCollection("advertiser");
 	
-	public static void generateInfluencer() throws IOException{
-		MongoClient mongoClient = new MongoClient();
+	public static void declareCollections() {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = new MongoClient();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		DB db = mongoClient.getDB("awf_db");
-		DBCollection coll = db.getCollection("user");
-		
-		// Add data
-		// Vars
-		String firstName = randomFirstName();
-		String type = ("influencerAccount");
-		String primaryAccount = ("Influencer");
-		Boolean completed = randomBoolean();
-		Boolean linkToTwitter = randomBoolean();
-		String securityQuestion1 = randomWord();
-		String securityQuestion2 = randomWord();
-		String lastName = randomLastName();
-		String dateOfBirth = randomDate();
-		String fullName = (firstName + " " + lastName);
-		String email = (firstName + lastName + "@example.com");
-		String password = ("password");
-		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type + ", Completed: " + completed);
-		exportCredentials(export);
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection securityCollection = db.getCollection("security");
+		DBCollection users = db.getCollection("user");
+		DBCollection advertisers = db.getCollection("advertiser");
 	}
 	
-	public static void generateAdvertiser() throws IOException {
-		MongoClient mongoClient = new MongoClient();
+	// Set up db and mongo client here? Who really knows...
+	// Well we will try it
+
+
+	public static Object createUser(String primaryAccount) throws IOException {
+		// declareCollections();
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = new MongoClient();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		DB db = mongoClient.getDB("awf_db");
-		DBCollection coll = db.getCollection("user");
-		
-		// Add data
-		// Vars
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection securityCollection = db.getCollection("security");
+		DBCollection users = db.getCollection("user");
+		DBCollection advertisers = db.getCollection("advertiser");
+		// Generate random user names, passwords, and email
 		String firstName = randomFirstName();
-		String type = ("advertiserAccount");
-		String primaryAccount = ("Advertiser");
-		Boolean completed = randomBoolean();
 		String lastName = randomLastName();
+		String email = (firstName + "." + lastName + "@adswithfriends.com");
+		String password = randomWord();
+		String fullName = firstName + " " + lastName;
+		// For testing purposes, we will set these to true
+		Boolean completed = true;
+		Boolean confirmed = true;
+		// End previous comment
+		Boolean isActive = randomBoolean();
+		Boolean linkToTwitter = randomBoolean();
+		// Generate a random UID
+		int uid = randomNumber();
+		// Generate a random birth date
 		String dateOfBirth = randomDate();
-		String securityQuestion1 = randomWord();
-		String securityQuestion2 = randomWord();
-		String fullName = (firstName + " " + lastName);
-		String email = (firstName + lastName + "@example.com");
-		String password = ("password");
-		String export = (firstName + " " + lastName + " , " + "DOB:" + dateOfBirth + " , "  + email + " , " + password + " , " + " Security Question 1: " + securityQuestion1 + " , " + "Security Question 2: " + securityQuestion2 + " , " + type);
-		exportCredentials(export);
+		// Generate a random location
+		Location location = randomLocation();
+		String fullLocation = location.getLocation();
+		String city = null;
+		String state = location.getState();
+		String country = location.getCountry();
+		// Do city location check
+		if(location.hasCity()) {
+			city = location.getCity();
+		}
+		
+		// Create a security profile for the user
+		ObjectId securityProfile = createSecurityProfile();
+		
+		// Create the user object
+		BasicDBObject userAccount = new BasicDBObject("primaryAccount", primaryAccount)
+		.append("firstName", firstName)
+		.append("lastName", lastName)
+		.append("completed", completed)
+		.append("confirmed", confirmed)
+		.append("isActive", isActive)
+		.append("uid", uid)
+		.append("fullName", fullName)
+		.append("linkToTwitter", linkToTwitter)
+		.append("birthdate", dateOfBirth)
+		.append("location", fullLocation)
+		.append("city", city)
+		.append("state", state)
+		.append("country", country)
+		.append("email", email)
+		.append("password", password)
+		.append("securityProfile", securityProfile);
+		
+		// Create advertiser account or influencer account
+		if(primaryAccount.equals("Influencer")) {
+			ObjectId influencerProfile = createInfluencer();
+			userAccount.append("influencerAccount", influencerProfile);
+			userAccount.append("primaryAccount", primaryAccount);
+		} else if(primaryAccount.equals("Advertiser")) {
+			ObjectId advertiserProfile = createAdvertiser();
+			userAccount.append("advertiserAccount", advertiserProfile);
+			userAccount.append("primaryAccount", primaryAccount);
+		} else {
+			System.out.println("ERROR!! Error Code 01 = Incorrect Account Type.");
+		}
+		
+		// Get user id
+		Object userId = userAccount.get("_id");
+		
+		// Insert the user into the collection of users
+		users.insert(userAccount);
+		
+		// Expor the users credentials
+		String creds = "Username: " + email + "; Password: " + password + ";";
+		exportCredentials(creds);
+		
+		return userId;
+		
+	}
+	
+	private static ObjectId createSecurityProfile() throws IOException{
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = new MongoClient();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DB db = mongoClient.getDB("awf_db");
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection securityCollection = db.getCollection("security");
+		DBCollection users = db.getCollection("user");
+		DBCollection advertisers = db.getCollection("advertiser");
+		// Generate the random information for security profile
+		boolean resetPassword = false;
+		String questionOne = randomWord();
+		String questionTwo = randomWord();
+		String answerOne = randomWord();
+		String answerTwo = randomWord();
+		int resetToken = randomNumber();
+		
+		// Create the security Object
+		BasicDBObject profile = new BasicDBObject("resetPassword", resetPassword)
+		.append("questionOne", questionOne)
+		.append("questionTwo", questionTwo)
+		.append("answerOne", answerOne)
+		.append("anwerTwo", answerTwo)
+		.append("resetToken", resetToken);
+		
+		// Get object id
+		ObjectId thisID = (ObjectId)profile.get("_id");
+		
+		// insert the sercurity object into the security collection
+		securityCollection.insert(profile);
+		
+		return thisID;
+		
+	}
+	
+	private static ObjectId createInfluencer() {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = new MongoClient();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DB db = mongoClient.getDB("awf_db");
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection securityCollection = db.getCollection("security");
+		DBCollection users = db.getCollection("user");
+		DBCollection advertisers = db.getCollection("advertiser");
+		//Generate the random data
+		boolean isActive = true;
+		String[] sphere = randomSphere();
+		boolean allowExplicit = randomBoolean();
+		Location fullTwitterLocation = randomLocation();
+		String twitterLocation = fullTwitterLocation.getLocation();
+		int followerCount = randomNumber();
+		String dateCreated = randomDate();
+		int statusCount = randomNumber();
+		boolean defaultProfile = randomBoolean();
+		boolean suspendStatus = randomBoolean();
+		float totalValue = randomFloat();
+		int totalTweets = randomNumber();
+		float payoutOption = randomFloat();
+
+		//Create the influencer object
+		BasicDBObject influencerAccount = new BasicDBObject("isActive", isActive)
+		.append("sphere", sphere)
+		.append("allowExplicit", allowExplicit)
+		.append("location", twitterLocation)
+		.append("followerCount", followerCount)
+		.append("dateCreated", dateCreated)
+		.append("statusCount", statusCount)
+		.append("defaultProfile", defaultProfile)
+		.append("suspendStatus", suspendStatus)
+		.append("totalValue", totalValue)
+		.append("totalTweets", totalTweets)
+		.append("payoutOption", payoutOption);
+
+		ObjectId influencerID = (ObjectId)influencerAccount.get("_id");
+
+		//Insert the influencer into the collection
+		influencers.insert(influencerAccount);
+
+		return influencerID;
+	}
+	
+	private static ObjectId createAdvertiser() throws IOException {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = new MongoClient();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DB db = mongoClient.getDB("awf_db");
+		DBCollection influencers = db.getCollection("influencer");
+		DBCollection securityCollection = db.getCollection("security");
+		DBCollection users = db.getCollection("user");
+		DBCollection advertisers = db.getCollection("advertiser");
+		//Generate random data
+		boolean isActive = true;
+		String[] sphere = randomSphere();
+		boolean explicit = randomBoolean();
+		int totalTweets = randomNumber();
+		float currentValue = randomFloat();
+		boolean advertiserReady = true;
+		float lastUploadValue = randomFloat();
+		String organizationName = randomWord();
+
+		//Create the advertiser object
+		BasicDBObject advertiserAccount = new BasicDBObject("isActive", isActive)
+		.append("sphere", sphere)
+		.append("explicit", explicit)
+		.append("totalTweets", totalTweets)
+		.append("currentValue", currentValue)
+		.append("advertiserReady", advertiserReady)
+		.append("lastUploadValue", lastUploadValue)
+		.append("organizationName", organizationName);
+
+		ObjectId advertiserID = (ObjectId)advertiserAccount.get("_id");
+
+		//Insert the advertiser into the collection
+		advertisers.insert(advertiserAccount);
+
+		return advertiserID;
 	}
 	
 	public static void exportCredentials(String export) throws IOException {

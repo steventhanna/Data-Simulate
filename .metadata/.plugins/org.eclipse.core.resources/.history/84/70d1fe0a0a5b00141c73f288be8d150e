@@ -72,12 +72,12 @@ public class AddToMongo extends Randomness {
 		
 		//Create advertiser account or influencer account
 		if(primaryAccount.equals("Influencer")) {
-			Object influencerProfile = createInfluencer();
+			ObjectId influencerProfile = createInfluencer();
 			userAccount.append("influencerAccount", influencerProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}
 		else if(primaryAccount.equals("Advertiser")) {
-			Object advertiserProfile = createAdvertiser();
+			ObjectId advertiserProfile = createAdvertiser();
 			userAccount.append("advertiserAccount", advertiserProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}
@@ -127,7 +127,7 @@ public class AddToMongo extends Randomness {
 		
 	}
 	
-	public static Object createInfluencer() throws IOException {
+	public static ObjectId createInfluencer() throws IOException {
 		// init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
@@ -162,13 +162,16 @@ public class AddToMongo extends Randomness {
 		.append("totalTweets", totalTweets)
 		.append("payoutOption", payoutOption);
 
+		ObjectId influencerID = (ObjectId)influencerAccount.get("_id");
+
 		//Insert the influencer into the collection
 		influencers.insert(influencerAccount);
 
-		return influencerAccount.get("_id");
+		return influencerID;
+		
 	}
 
-	public static Object createAdvertiser() throws IOException {
+	public static ObjectId createAdvertiser() throws IOException {
 		// init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
@@ -194,10 +197,12 @@ public class AddToMongo extends Randomness {
 		.append("lastUploadValue", lastUploadValue)
 		.append("organizationName", organizationName);
 	
+		ObjectId advertiserID = (ObjectId)advertiserAccount.get("_id");
+	
 		//Insert the advertiser into the collection
 		advertisers.insert(advertiserAccount);
 	
-		return advertiserAccount.get("_id");
+		return advertiserID;
 	}
 	
 	public static void exportCredentials(String export) throws IOException {

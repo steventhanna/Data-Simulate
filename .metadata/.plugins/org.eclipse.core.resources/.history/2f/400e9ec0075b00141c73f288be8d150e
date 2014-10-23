@@ -50,10 +50,12 @@ public class DataSimulate extends AddToMongo {
         DB db = mongoClient.getDB("awf_db");
 
         // get a list of the collections in this database and print them out
-        /*Set<String> collectionNames = db.getCollectionNames();
+        Set<String> collectionNames = db.getCollectionNames();
         for (final String s : collectionNames) {
             System.out.println(s);
-        }*/
+        }
+        // get a collection object to work with
+        DBCollection coll = db.getCollection("influencer");
         
         //Create a boolean for either advertiser or influencer
 		boolean advOrInf;
@@ -72,7 +74,25 @@ public class DataSimulate extends AddToMongo {
 				createUser("Influencer");
 			}
 		}
+        for(int i = 0; i < 100; i++) {
+        	
+        }
         
+        
+        
+        System.out.println(coll);
+        /*
+        BasicDBObject doc = new BasicDBObject("_id", "josh")
+        .append("isActive", "true")
+        .append("sphere", "Politics")
+        .append("allowExplicit", "true")
+        .append("totalValue", 0)
+        .append("totalTweets", 0)
+        .append("payoutOption", 50);
+        coll.insert(doc);
+        DBObject myDoc = coll.findOne();
+        System.out.println(myDoc);
+         */
         mongoClient.close();
     }
     // CHECKSTYLE:ON

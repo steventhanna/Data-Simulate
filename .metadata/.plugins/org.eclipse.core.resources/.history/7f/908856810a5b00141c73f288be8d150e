@@ -60,7 +60,7 @@ public class DataSimulate extends AddToMongo {
 	
 		//Loop 100 times creating new users
 			//Should create about 50 influencers and about 50 advertisers
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 1; i++) {
 			advOrInf = new Random().nextInt(2)==0;
 	
 			if(advOrInf == true) {

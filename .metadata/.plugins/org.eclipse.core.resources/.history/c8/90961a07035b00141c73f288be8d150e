@@ -49,7 +49,7 @@ public class AddToMongo extends Randomness {
 		}
 		
 		// Create a security profile for a user
-		Object securityProfile = createSecurityProfile();
+		ObjectId securityProfile = createSecurityProfile();
 		
 		// Create the user object
 		BasicDBObject userAccount = new BasicDBObject("primaryAccount", primaryAccount)
@@ -72,12 +72,12 @@ public class AddToMongo extends Randomness {
 		
 		//Create advertiser account or influencer account
 		if(primaryAccount.equals("Influencer")) {
-			Object influencerProfile = createInfluencer();
+			ObjectId influencerProfile = createInfluencer();
 			userAccount.append("influencerAccount", influencerProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}
 		else if(primaryAccount.equals("Advertiser")) {
-			Object advertiserProfile = createAdvertiser();
+			ObjectId advertiserProfile = createAdvertiser();
 			userAccount.append("advertiserAccount", advertiserProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}
@@ -96,9 +96,11 @@ public class AddToMongo extends Randomness {
 		exportCredentials(creds);
 
 		return userId;
+		
+		
 	}
 
-	public static Object createSecurityProfile() throws IOException {
+	public static ObjectId createSecurityProfile() throws IOException {
 		// Init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
@@ -120,14 +122,17 @@ public class AddToMongo extends Randomness {
 		.append("answerTwo", answerTwo)
 		.append("resetToken", resetToken);
 		
+		
+		ObjectId thisID = (ObjectId)profile.get("_id");
+		
 		//insert the security object into the security collection
 		securityCollection.insert(profile);
 
-		return profile.get("_id");
+		return thisID;
 		
 	}
 	
-	public static Object createInfluencer() throws IOException {
+	public static ObjectId createInfluencer() throws IOException {
 		// init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
@@ -162,13 +167,16 @@ public class AddToMongo extends Randomness {
 		.append("totalTweets", totalTweets)
 		.append("payoutOption", payoutOption);
 
+		ObjectId influencerID = (ObjectId)influencerAccount.get("_id");
+
 		//Insert the influencer into the collection
 		influencers.insert(influencerAccount);
 
-		return influencerAccount.get("_id");
+		return influencerID;
+		
 	}
 
-	public static Object createAdvertiser() throws IOException {
+	public static ObjectId createAdvertiser() throws IOException {
 		// init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");
@@ -194,15 +202,17 @@ public class AddToMongo extends Randomness {
 		.append("lastUploadValue", lastUploadValue)
 		.append("organizationName", organizationName);
 	
+		ObjectId advertiserID = (ObjectId)advertiserAccount.get("_id");
+	
 		//Insert the advertiser into the collection
 		advertisers.insert(advertiserAccount);
 	
-		return advertiserAccount.get("_id");
+		return advertiserID;
 	}
 	
 	public static void exportCredentials(String export) throws IOException {
 		
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/Java/Data-Simulate/credentials.txt", true)))) {
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("/Users/steventhanna/Desktop/Programming/sails/adswithfriends/data-simulate/datasimulate/credentials.txt", true)))) {
 		    out.println(export);
 		}catch (IOException e) {
 		    //exception handling left as an exercise for the reader

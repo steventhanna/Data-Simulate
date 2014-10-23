@@ -55,6 +55,9 @@ public class DataSimulate extends AddToMongo {
             System.out.println(s);
         }*/
         
+        // get a collection object to work with
+        DBCollection coll = db.getCollection("influencer");
+        
         //Create a boolean for either advertiser or influencer
 		boolean advOrInf;
 	

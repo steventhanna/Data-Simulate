@@ -77,7 +77,7 @@ public class AddToMongo extends Randomness {
 			userAccount.append("primaryAccount", primaryAccount);
 		}
 		else if(primaryAccount.equals("Advertiser")) {
-			Object advertiserProfile = createAdvertiser();
+			ObjectId advertiserProfile = createAdvertiser();
 			userAccount.append("advertiserAccount", advertiserProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}
@@ -168,7 +168,7 @@ public class AddToMongo extends Randomness {
 		return influencerAccount.get("_id");
 	}
 
-	public static Object createAdvertiser() throws IOException {
+	public static ObjectId createAdvertiser() throws IOException {
 		// init
 		MongoClient mongoClient = new MongoClient();
 		DB db = mongoClient.getDB("awf_db");

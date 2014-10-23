@@ -72,7 +72,7 @@ public class Randomness {
 	}
 	
 	public static String randomFirstName() throws IOException {
-		String fileName = "/Users/steventhanna/Desktop/Programming/Java/Data-Simulate/firstNames.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/Java/Data-Simulate/firstNames.txt ";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 
@@ -104,7 +104,7 @@ public class Randomness {
 	}
 	
 	public static String randomWord() throws IOException {
-		String fileName = "/Users/steventhanna/Desktop/Programming/Java/Data-Simulate/the-english.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/sails/adswithfriends/Data-Simulate/the-english.txt";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 
@@ -120,7 +120,7 @@ public class Randomness {
 	}
 	
 	public static String randomLastName() throws IOException {
-		String fileName = "/Users/steventhanna/Desktop/Programming/Java/Data-Simulate/lastNames.txt";
+		String fileName = "/Users/steventhanna/Desktop/Programming/sails/adswithfriends/Data-Simulate/lastNames.txt";
 		ArrayList<String> allNames = new ArrayList<String>();
 		Random random = new Random();
 

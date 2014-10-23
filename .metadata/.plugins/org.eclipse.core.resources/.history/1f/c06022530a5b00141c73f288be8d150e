@@ -77,7 +77,7 @@ public class AddToMongo extends Randomness {
 			userAccount.append("primaryAccount", primaryAccount);
 		}
 		else if(primaryAccount.equals("Advertiser")) {
-			Object advertiserProfile = createAdvertiser();
+			ObjectId advertiserProfile = createAdvertiser();
 			userAccount.append("advertiserAccount", advertiserProfile);
 			userAccount.append("primaryAccount", primaryAccount);
 		}

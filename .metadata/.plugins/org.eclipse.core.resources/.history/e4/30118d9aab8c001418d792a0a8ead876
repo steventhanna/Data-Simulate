@@ -1,0 +1,24 @@
+import com.mongodb.*;
+
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Set;
+import java.io.*;
+
+import org.bson.types.ObjectId;
+
+public class Defaults {
+	
+	public static void createDefaultsDB() throws IOException {
+		MongoClient mongoClient = new MongoClient();
+		DB db = mongoClient.getDB("data-simulate-defaults");
+	}
+	
+	
+	public static void main(String[] args) throws IOException {
+		createDefaultsDB();
+		
+	}
+
+}
